@@ -1,8 +1,12 @@
 package se.arbetsformedlingen.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Country")
 @Table(name="country")
@@ -41,10 +45,35 @@ public class Country {
     private Integer capital;
     @Column(name = "Code2")
     private String code2;
+    @JsonIgnoreProperties("country")
+    @OneToMany(mappedBy="country")
+    private List<City> cities = new ArrayList<>();
+    @JsonIgnoreProperties("country")
+    @OneToMany(mappedBy="country")
+    private List<CountryLanguage> countryLanguages = new ArrayList<>();
+
 
     public Country() {
     }
 
+    public void addCity(City city){
+        cities.add(city);
+        city.setCountry(this);
+    }
+
+    public void removeCity(City city){
+        cities.remove(city);
+        city.setCountry(null);
+    }
+
+    public List<City> getCities() { return cities; }
+
+    public void setCities(List<City> cities) { this.cities = cities; }
+
+    public List<CountryLanguage> getCountryLanguages() { return countryLanguages; }
+
+    public void setCountryLanguages(List<CountryLanguage> countryLanguages) { this.countryLanguages = countryLanguages;
+    }
     public String getCode() {
         return code;
     }

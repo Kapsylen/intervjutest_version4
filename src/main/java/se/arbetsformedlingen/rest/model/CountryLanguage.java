@@ -1,5 +1,7 @@
 package se.arbetsformedlingen.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity(name = "CountryLanguage")
@@ -15,7 +17,8 @@ public class CountryLanguage {
     private double percentage;
 
     @ManyToOne()
-    @JoinColumn(name="CountryCode", referencedColumnName = "Code")
+    @JsonIgnoreProperties("cities")
+    @JoinColumn(name="CountryCode")
     private Country country;
 
     public Country getCountry() { return country; }

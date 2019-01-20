@@ -11,7 +11,7 @@ import se.arbetsformedlingen.rest.model.Country;
 import se.arbetsformedlingen.rest.service.CountryService;
 
 import java.util.List;
-
+import java.util.Map;
 
 
 @RestController
@@ -21,7 +21,7 @@ public class CountryController {
     @Autowired
     private CountryService countryService;
 
-    @GetMapping(value = "/{name}")
+    @GetMapping(value = "/country/find/{name}")
     @ResponseBody
     public ResponseEntity find(@PathVariable(value = "name", required = true) String name){
         return ResponseEntity.ok().body(countryService.findCountry(name));
@@ -103,6 +103,11 @@ public class CountryController {
                                                                                      @PathVariable(value = "population") Integer population){
         return new ResponseEntity(countryService.findAllCitiesInAContinentWithAPopulationEqualOrGreaterThanX(continent, population),
                 HttpStatus.FOUND);
+    }
+
+    @GetMapping(value = "/countries/{code}/cities")
+    public ResponseEntity<List<City>> findAllCitiesByCountry(@PathVariable(value = "code") String code) {
+        return new ResponseEntity(countryService.findAllCitiesByCountry(code), HttpStatus.FOUND);
     }
 
 

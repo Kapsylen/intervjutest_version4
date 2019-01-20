@@ -1,6 +1,9 @@
 package se.arbetsformedlingen.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity(name="City")
 @Table(name="city")
@@ -15,8 +18,9 @@ public class City {
     String district;
     @Column(name="Population")
     Integer population;
-    @ManyToOne()
-    @JoinColumn(name="CountryCode", referencedColumnName = "Code")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("cities")
+    @JoinColumn(name="CountryCode")
     private Country country;
 
     public Country getCountry() {
@@ -51,4 +55,16 @@ public class City {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        City city = (City) o;
+        return Objects.equals(id, city.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

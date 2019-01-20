@@ -31,4 +31,7 @@ public interface CountryJpaRepository extends JpaRepository<Country, Integer> {
     @Query("SELECT c.name, c.population FROM City c, Country k WHERE k.continent = :continent AND c.country = k.code AND c.population >= :population")
     List<Country> findAllCitiesInAContinentWithAPopulationEqualOrGreaterThanX(@Param("continent")String continent, @Param("population") Integer population);
 
+    @Query("SELECT c FROM City c, Country k WHERE k.code = c.country.code AND c.country.code = :code")
+    List<City> findAllCitiesByCode(@Param("code")String code);
+
 }

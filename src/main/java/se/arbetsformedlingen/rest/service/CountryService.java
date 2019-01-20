@@ -3,12 +3,17 @@ package se.arbetsformedlingen.rest.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.arbetsformedlingen.rest.model.City;
+import se.arbetsformedlingen.rest.repository.CityJpaRepository;
 import se.arbetsformedlingen.rest.repository.CountryDAO;
 import se.arbetsformedlingen.rest.model.Country;
 import se.arbetsformedlingen.rest.repository.CountryJpaRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CountryService {
@@ -19,7 +24,11 @@ public class CountryService {
     @Autowired
     CountryJpaRepository countryJpaRep;
 
+    @Autowired
+    CityJpaRepository cityJpaRep;
+
     public List<Country> listAllCountries() {
+
         return  countryJpaRep.listAllCountries();
     }
 
@@ -77,4 +86,11 @@ public class CountryService {
     }
 
 
+    public List<City> findAllCitiesByCountry(String code) {
+
+        List<City> listOfCities = countryJpaRep.findAllCitiesByCode(code);
+
+        return  listOfCities;
+
+    }
 }
